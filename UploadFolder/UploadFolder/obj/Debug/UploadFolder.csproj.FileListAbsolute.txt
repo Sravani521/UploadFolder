@@ -1,0 +1,13 @@
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\obj\Debug\UploadFolder.Main.resources
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\obj\Debug\UploadFolder.Properties.Resources.resources
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\obj\Debug\UploadFolder.csproj.GenerateResource.cache
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\obj\Debug\UploadFolder.csproj.CoreCompileInputs.cache
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\bin\Debug\UploadFolder.exe.config
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\bin\Debug\UploadFolder.exe
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\bin\Debug\UploadFolder.pdb
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\obj\Debug\UploadFolder.exe
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\obj\Debug\UploadFolder.pdb
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\bin\Debug\UploadFolderDAL.dll
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\bin\Debug\UploadFolderDAL.pdb
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\obj\Debug\UploadFolder.csproj.CopyComplete
+D:\sravani\File Upload Project\UploadFolder\UploadFolder\obj\Debug\UploadFolder.csprojAssemblyReference.cache
