@@ -13,93 +13,49 @@ namespace UploadFolderDAL
         public static int count;
         string value;
         public int monthvalue;
-                   
-        public string  Accessed(int UpTo)
+
+
+        public string getdata(string Typeofinfo,string Monthvalue)
         {
-            count = 0;
             using (SqlConnection connection = new SqlConnection())
             {
-                
                 connection.ConnectionString = ("Data Source=ACUPC-0906;Initial Catalog=FolderUpload;Integrated Security=True");
                 connection.Open();
-                string query = "select count(*) from FileInfo f where DATEDIFF(month,f.CreatedOn,GETDATE())<monthvalue";  
-                SqlCommand command = new SqlCommand(query, connection);               
-                SqlDataReader dr = command.ExecuteReader();
-
-                while (dr.Read())
-                {
-                    value = dr[0].ToString();
-                    
-                }
-                connection.Close();
-            }
-
-            return value;
-        }
-        public string Created(int UpTo)
-        {
-            count = 0;
-            using (SqlConnection connection = new SqlConnection())
-            {
-
-                connection.ConnectionString = ("Data Source=ACUPC-0906;Initial Catalog=FolderUpload;Integrated Security=True");
-                connection.Open();
-                string query = "select count(*) from FileInfo f where DATEDIFF(month,f.CreatedOn,GETDATE())<UpTo";
+                string query = "(select count("+ Typeofinfo + ") from FileInfo f where DATEDIFF(month,f."+Typeofinfo+",GETDATE())<"+Monthvalue+ ")";
                 SqlCommand command = new SqlCommand(query, connection);
                 SqlDataReader dr = command.ExecuteReader();
 
                 while (dr.Read())
                 {
                     value = dr[0].ToString();
-
                 }
                 connection.Close();
+                return value;
             }
-
-            return value;
         }
-
-        public string Modified(int UpTo)
+        public DataSet RetreiveToGrid(string TypeOfInfo, string DisplayMonths)
         {
-            count = 0;
+            DataSet dset;
             using (SqlConnection connection = new SqlConnection())
             {
-
                 connection.ConnectionString = ("Data Source=ACUPC-0906;Initial Catalog=FolderUpload;Integrated Security=True");
                 connection.Open();
-                string query = "select count(*) from FileInfo f where DATEDIFF(month,f.CreatedOn,GETDATE())<UpTo";
+                string query = "(select * from FileInfo f where DATEDIFF(month,"+TypeOfInfo+",GETDATE())<" + DisplayMonths + ")";
                 SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader dr = command.ExecuteReader();
 
-                while (dr.Read())
+
+                using (SqlDataAdapter sda = new SqlDataAdapter(command))
                 {
-                    value = dr[0].ToString();
-
-                }
-                connection.Close();
-            }
-
-            return value;
-        }
-        public void BindGrid()
-        {
-            string constring = @"Data Source=.\SQL2005;Initial Catalog=Northwind;User id = sa;password=pass@123";
-            using (SqlConnection con = new SqlConnection(constring))
-            {
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM Customers", con))
-                {
-                    cmd.CommandType = CommandType.Text;
-                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    using (dset = new DataSet())
                     {
-                        using (DataTable dt = new DataTable())
-                        {
-                            sda.Fill(dt);
-                            dataGridView1.DataSource = dt;
-                        }
+                        sda.Fill(dset, "FileInfo");
                     }
                 }
+               
             }
+            return dset;
         }
+       
     }
 }
 

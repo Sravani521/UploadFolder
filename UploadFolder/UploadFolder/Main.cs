@@ -8,53 +8,42 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using UploadFolderDAL;
-
 using System.Windows.Forms;
 
 namespace UploadFolder
 {
     public partial class Main : Form
     {
+        Repository rp = new Repository();
         public Main()
         {
             InitializeComponent();
-            
+            Dictionary<string, string> test = new Dictionary<string, string>();
+            test.Add("CreatedOn", "Created");
+            test.Add("ModifiedOn", "Modified");
+            test.Add("FileAccessed", "Accesed");
+            InformationBox.DataSource = new BindingSource(test, null);
+            InformationBox.DisplayMember = "Value";
+            InformationBox.ValueMember = "Key";
+            MonthsBox.SelectedItem = "1";
         }
         
         private void button1_Click(object sender, EventArgs e)
         {
 
-            Repository rp = new Repository();
-            comboBox2.Text = rp.monthvalue.ToString();
-            label3.Text = comboBox1.SelectedItem.ToString();
-            
-            switch (label3.Text)
-            {
-                case "Accessed":
-                    int value12 = Convert.ToInt32(comboBox2.SelectedItem.ToString());
-                    rp.Accessed(value12);
-                    break;
-                case "Modified":
-                    rp.Modified(Convert.ToInt32(comboBox2.SelectedItem.ToString()));
-                    break;
-                case "Created":
-                    int returnvalue=rp.Created(Convert.ToInt32(comboBox2.SelectedItem.ToString()));
-                    break;
-            }
+         
+            SelectedInfoLabel.Text = InformationBox.SelectedItem.ToString();
+            SelectedInfoLabel.Text = InformationBox.SelectedValue.ToString();
+            SelectedInfoLabel.Visible = true;
+            DisplayGridButton.Visible = true;
+            DisplayGridButton.Text=rp.getdata(InformationBox.SelectedValue.ToString(),MonthsBox.SelectedItem.ToString()); 
+        }
 
-            //if (label3.Text == "Accessed"&&comboBox2.Text=="1 Week")
-            //{
-            //    CountBox.Text = rp.Accessed();
-            //}
-            //if (label3.Text == "Created"&&comboBox2.Text=="1 Months")
-            //{
-            //    CountBox.Text = rp.Created();
-            //}
-            //if (label3.Text == "Modified"&&comboBox2.Text=="3 Months")
-            //{
-            //    CountBox.Text = rp.Modified();
-            //}
-            
+        private void DisplayGrid_Click(object sender, EventArgs e)
+        {
+            this.DataGridView.Visible = true;
+            DataSet dset = rp.RetreiveToGrid(InformationBox.SelectedValue.ToString(), MonthsBox.SelectedItem.ToString());
+            DataGridView.DataSource = dset.Tables["FileInfo"];          
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -68,5 +57,9 @@ namespace UploadFolder
         {
 
         }
+
+       
+
+       
     }
 }
