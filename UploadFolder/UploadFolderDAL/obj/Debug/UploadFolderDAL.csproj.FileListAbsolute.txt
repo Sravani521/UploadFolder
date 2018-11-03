@@ -3,3 +3,4 @@ D:\sravani\File Upload Project\UploadFolder\UploadFolderDAL\bin\Debug\UploadFold
 D:\sravani\File Upload Project\UploadFolder\UploadFolderDAL\obj\Debug\UploadFolderDAL.csproj.CoreCompileInputs.cache
 D:\sravani\File Upload Project\UploadFolder\UploadFolderDAL\obj\Debug\UploadFolderDAL.dll
 D:\sravani\File Upload Project\UploadFolder\UploadFolderDAL\obj\Debug\UploadFolderDAL.pdb
+D:\sravani\File Upload Project\UploadFolder\UploadFolderDAL\obj\Debug\UploadFolderDAL.csprojAssemblyReference.cache

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -10,50 +6,67 @@ namespace UploadFolderDAL
 {
     public class Repository
     {
-        public static int count;
+        string DataBaseLink = "Data Source=ACUPC-0906;Initial Catalog=FolderUpload;Integrated Security=True";
         string value;
-        public int monthvalue;
-
-
-        public string getdata(string Typeofinfo,string Monthvalue)
+       // public int monthvalue;
+        public string Getdata(string Typeofinfo,string Monthvalue)
         {
-            using (SqlConnection connection = new SqlConnection())
+            try
             {
-                connection.ConnectionString = ("Data Source=ACUPC-0906;Initial Catalog=FolderUpload;Integrated Security=True");
-                connection.Open();
-                string query = "(select count("+ Typeofinfo + ") from FileInfo f where DATEDIFF(month,f."+Typeofinfo+",GETDATE())<"+Monthvalue+ ")";
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader dr = command.ExecuteReader();
-
-                while (dr.Read())
+                using (SqlConnection connection = new SqlConnection())
                 {
-                    value = dr[0].ToString();
-                }
-                connection.Close();
-                return value;
-            }
-        }
-        public DataSet RetreiveToGrid(string TypeOfInfo, string DisplayMonths)
-        {
-            DataSet dset;
-            using (SqlConnection connection = new SqlConnection())
-            {
-                connection.ConnectionString = ("Data Source=ACUPC-0906;Initial Catalog=FolderUpload;Integrated Security=True");
-                connection.Open();
-                string query = "(select * from FileInfo f where DATEDIFF(month,"+TypeOfInfo+",GETDATE())<" + DisplayMonths + ")";
-                SqlCommand command = new SqlCommand(query, connection);
+                    connection.ConnectionString = (DataBaseLink);
+                    connection.Open();
+                    string query = "(select count(" + Typeofinfo + ") from FileInfo f where DATEDIFF(month,f." + Typeofinfo + ",GETDATE())<" + Monthvalue + ")";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    SqlDataReader dataReader = command.ExecuteReader();
 
-
-                using (SqlDataAdapter sda = new SqlDataAdapter(command))
-                {
-                    using (dset = new DataSet())
+                    while (dataReader.Read())
                     {
-                        sda.Fill(dset, "FileInfo");
+                        value = dataReader[0].ToString();
                     }
+                    connection.Close();
+                    return value;
                 }
-               
             }
-            return dset;
+            catch(Exception Ex)
+            {
+                ErrrorLog.ErrorlogWrite(Ex);
+                throw;
+            }
+            
+           
+            
+        }
+        public DataSet DataGrid(string TypeOfInfo, string DisplayMonths)
+        {           
+            DataSet dataset;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection())
+                {
+                    connection.ConnectionString = (DataBaseLink);
+                    connection.Open();
+                    string query = "(select * from FileInfo f where DATEDIFF(month," + TypeOfInfo + ",GETDATE())<" + DisplayMonths + ")";
+                    SqlCommand command = new SqlCommand(query, connection);
+
+                    using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
+                    {
+                        using (dataset = new DataSet())
+                        {
+                            dataAdapter.Fill(dataset, "FileInfo");
+                        }
+                    }
+
+                }
+                return dataset;
+            }
+            catch(Exception Ex)
+            {
+                ErrrorLog.ErrorlogWrite(Ex);
+                throw;
+                
+            }
         }
        
     }
