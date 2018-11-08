@@ -100,6 +100,7 @@ namespace UploadFolder
                 SpPermissions.GetPermmssion(clientContext, folder, sourceFolder, destinationLigraryTitle);
                 
                 UploadFolder(clientContext, DirectoriInfo, folder, destinationLigraryTitle);
+
             }
             catch (Exception ex)
             {

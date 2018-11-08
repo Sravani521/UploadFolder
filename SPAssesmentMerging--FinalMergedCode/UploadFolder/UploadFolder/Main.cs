@@ -19,7 +19,7 @@ using DAL;
 using DAL.Model;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Office.Server;
-//using Microsoft.Reporting.WinForms;
+using Microsoft.SqlServer; 
 using System.Diagnostics;
 
 namespace UploadFolder
@@ -179,41 +179,56 @@ namespace UploadFolder
         }
 
         /*-----------------retreiving the data from the database and Fill the data to ReportViewer-------------------------*/
+        //private void LoadProductsReport()
+        //{
+        //    reportViewer1.LocalReport.ReportEmbeddedResource = "RDLCReport.rptProducts.rdlc";
+
+        //    reportViewer1.LocalReport.DataSources.Clear();
+
+        //    reportViewer1.LocalReport.DataSources.Add(ReportDataSource("dsProducts", sql_stmt));
+
+
+
+        //reportViewer1.ProcessingMode = ProcessingMode.Local;
+        ////reportViewer1.LocalReport.ReportPath = Server.MapPath("~/Report.rdlc");
+        //DataTable dsCustomers = DatatableObj;
+
+        //ReportDataSource datasource = new ReportDataSource("Customers", dsCustomers);
+        //reportViewer1.LocalReport.DataSources.Clear();
+        //reportViewer1.LocalReport.DataSources.Add(datasource);
+
+
+
+        //ReportDataSource datasource = new ReportDataSource("FileInfo", DatatableObj.Rows);
+        // this.reportViewer1.LocalReport.DataSources.Clear();
+        //this.reportViewer1.LocalReport.DataSources.Add(datasource);
+        // this.reportViewer1.RefreshReport();
+
+
+
+
+        //LocalReport r = new LocalReport();          
+        //r.DataSources.Add(rptData);
+
+        //reportViewer1.LocalReport.DataSources.Add(rptData);
+        //}
 
         private void SelectedInfoButton_Click(object sender, EventArgs e)
         {
             try
             {
-                ////this.DataGridView.Visible = true;
-               // DataTable DatatableObj = RepObj.GetInformation(InformationBox.SelectedValue.ToString(), MonthsBox.SelectedItem.ToString());
 
-                //reportViewer1.Visible = true;
-                ////reportViewer1.LocalReport.DataSources.Clear();
-                ////ReportDataSource rptData = new ReportDataSource("dsSource", DatatableObj);
-
-                //reportViewer1.ProcessingMode = ProcessingMode.Local;
-                ////reportViewer1.LocalReport.ReportPath = Server.MapPath("~/Report.rdlc");
-                //DataTable dsCustomers = DatatableObj;
-
-                //ReportDataSource datasource = new ReportDataSource("Customers", dsCustomers);
-                //reportViewer1.LocalReport.DataSources.Clear();
-                //reportViewer1.LocalReport.DataSources.Add(datasource);
-
-
-             
-                //ReportDataSource datasource = new ReportDataSource("FileInfo", DatatableObj.Rows);
-                this.reportViewer1.LocalReport.DataSources.Clear();
-                //this.reportViewer1.LocalReport.DataSources.Add(datasource);
-                this.reportViewer1.RefreshReport();
-
-
-
-
-                //LocalReport r = new LocalReport();          
-                //r.DataSources.Add(rptData);
-
-                //reportViewer1.LocalReport.DataSources.Add(rptData);
-                //reportViewer1.LocalReport.Refresh();
+                //this.DataGridView.Visible = true;
+               DataSet dataSet = RepObj.GetInformationToRpt(InformationBox.SelectedValue.ToString(), MonthsBox.SelectedItem.ToString());
+                
+                reportViewer1.Visible = true;
+                reportViewer1.Reset();
+                reportViewer1.LocalReport.ReportEmbeddedResource = "UploadFolder.Report2.rdlc";
+                reportViewer1.LocalReport.DataSources.Clear();
+                ReportDataSource rptData = new ReportDataSource("FileInfo", dataSet);
+                reportViewer1.LocalReport.DataSources.Add(rptData);
+                FileInfoBindingSource.Add(rptData);
+                reportViewer1.LocalReport.Refresh();
             }
             catch (Exception ex)
             {
@@ -395,8 +410,11 @@ namespace UploadFolder
 
         private void Main_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'FolderUploadDataSet.FileInfo' table. You can move, or remove it, as needed.
+            this.FileInfoTableAdapter.Fill(this.FolderUploadDataSet.FileInfo);
 
             //this.reportViewer1.RefreshReport();
+            this.reportViewer1.RefreshReport();
             this.reportViewer1.RefreshReport();
         }
 
@@ -417,12 +435,10 @@ namespace UploadFolder
             {
                 DataRow[] DataRows = FileInfoTable.Select("Type='" + FileTypeComboBox.SelectedItem.ToString() + "'");
                 ReportDataSource reportDataSource = new ReportDataSource("Data", FileInfoTable);
-
-
-
+              
                 string exeFolder = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
 
-                reportViewer1.LocalReport.ReportPath = exeFolder + @"\Report1.rdlc";
+                reportViewer1.LocalReport.ReportPath = exeFolder + @"\Report2.rdlc";
 
 
                 reportViewer1.LocalReport.DataSources.Add(reportDataSource);
@@ -440,6 +456,13 @@ namespace UploadFolder
         private void UnsupportedButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void reportViewer1_Load(object sender, EventArgs e)
+        {
+          //  this.
+              //  this.vwrpt_TableAdapter1.Fill(this.DataSet1.vwDataset);
+              
         }
     }
 }

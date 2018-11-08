@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using DAL.Model;
+using DAL.Repository;
 
 namespace DAL
 {
@@ -16,8 +17,10 @@ namespace DAL
             {
                 using (SqlConnection connection = new SqlConnection())
                 {
+
                     connection.ConnectionString = (databaselink);
                     connection.Open();
+                   
                     string query = "(select count(" + Typeofinfo + ") from FileInfo f where DATEDIFF(month,f." + Typeofinfo + ",GETDATE())<" + Monthvalue + ")";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataReader dataReader = command.ExecuteReader();
@@ -32,8 +35,8 @@ namespace DAL
             }
             catch (Exception Ex)
             {
-                //ErrrorLog.ErrorlogWrite(Ex);
-                throw;
+                ErrrorLog.ErrorlogWrite(Ex);
+                return null;
             }
 
 
@@ -46,6 +49,7 @@ namespace DAL
             using (SqlConnection connection = new SqlConnection())
             {
                 connection.ConnectionString = databaselink;
+                connection.Open();
                 string query = "select distinct Type from FileInfo";
                 SqlCommand command = new SqlCommand(query, connection);
                 using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
@@ -61,11 +65,12 @@ namespace DAL
         }
         public DataTable GetFileInfoTable()
         {
-            //DataSet dataSet;
+           
             DataTable Dt;
             using (SqlConnection connection = new SqlConnection())
             {
                 connection.ConnectionString = databaselink;
+                connection.Open();
                 string query = "select * from FileInfo";
                 SqlCommand command = new SqlCommand(query, connection);
                 using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
@@ -81,21 +86,30 @@ namespace DAL
         }
 
 
-        public DataTable GetInformationToRpt(string TypeOfInfo, string DisplayMonths)
+        public DataSet GetInformationToRpt(string TypeOfInfo, string DisplayMonths)
         {
-            SqlDataAdapter Adapter;
+           
+            DataSet dataset;
             using (SqlConnection connection = new SqlConnection())
             {
-                DataTable RolesInfoTable = new DataTable();
-                connection.ConnectionString = ConnectionString.Constr;
+               
+                connection.ConnectionString = databaselink;
                 connection.Open();
                 string query = "(select * from FileInfo f where DATEDIFF(month," + TypeOfInfo + ",GETDATE())<" + DisplayMonths + ")";
-                Adapter = new SqlDataAdapter(query, connection);
-                Adapter.Fill(RolesInfoTable);
-                connection.Close();
-                return RolesInfoTable;
+                SqlCommand command = new SqlCommand(query, connection);
+                using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
+                {
+                    dataset = new DataSet();
+
+                    dataAdapter.Fill(dataset);
+                  
+                }
+                return dataset;
             }
+        
+            
         }
+      
 
         public string GetFileTypeCount(string fileType)
         {

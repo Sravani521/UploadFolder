@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource1 = new Microsoft.Reporting.WinForms.ReportDataSource();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.Errorlabel1 = new System.Windows.Forms.Label();
@@ -58,7 +60,7 @@
             this.CbDocumentlibrary = new System.Windows.Forms.ComboBox();
             this.CBfoldername = new System.Windows.Forms.ComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
+            this.FileTypeButton = new System.Windows.Forms.Button();
             this.UnsupportedButton = new System.Windows.Forms.Button();
             this.UnsupportedFiles = new System.Windows.Forms.Label();
             this.FileTypeComboBox = new System.Windows.Forms.ComboBox();
@@ -71,12 +73,17 @@
             this.MonthsLabel = new System.Windows.Forms.Label();
             this.InformationLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.FileTypeButton = new System.Windows.Forms.Button();
+            this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
+            this.FolderUploadDataSet = new UploadFolder.FolderUploadDataSet();
+            this.FileInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.FileInfoTableAdapter = new UploadFolder.FolderUploadDataSetTableAdapters.FileInfoTableAdapter();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FolderUploadDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FileInfoBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -370,8 +377,8 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.FileTypeButton);
             this.tabPage3.Controls.Add(this.reportViewer1);
+            this.tabPage3.Controls.Add(this.FileTypeButton);
             this.tabPage3.Controls.Add(this.UnsupportedButton);
             this.tabPage3.Controls.Add(this.UnsupportedFiles);
             this.tabPage3.Controls.Add(this.FileTypeComboBox);
@@ -392,14 +399,14 @@
             this.tabPage3.Text = "Reports";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // reportViewer1
+            // FileTypeButton
             // 
-            this.reportViewer1.Location = new System.Drawing.Point(339, 70);
-            this.reportViewer1.Name = "reportViewer1";
-            this.reportViewer1.ProcessingMode = Microsoft.Reporting.WinForms.ProcessingMode.Remote;
-            this.reportViewer1.ServerReport.BearerToken = null;
-            this.reportViewer1.Size = new System.Drawing.Size(401, 297);
-            this.reportViewer1.TabIndex = 34;
+            this.FileTypeButton.Location = new System.Drawing.Point(232, 298);
+            this.FileTypeButton.Name = "FileTypeButton";
+            this.FileTypeButton.Size = new System.Drawing.Size(75, 23);
+            this.FileTypeButton.TabIndex = 35;
+            this.FileTypeButton.UseVisualStyleBackColor = true;
+            this.FileTypeButton.Click += new System.EventHandler(this.FileTypeButton_Click);
             // 
             // UnsupportedButton
             // 
@@ -519,14 +526,32 @@
             this.label1.Size = new System.Drawing.Size(0, 13);
             this.label1.TabIndex = 22;
             // 
-            // FileTypeButton
+            // reportViewer1
             // 
-            this.FileTypeButton.Location = new System.Drawing.Point(232, 298);
-            this.FileTypeButton.Name = "FileTypeButton";
-            this.FileTypeButton.Size = new System.Drawing.Size(75, 23);
-            this.FileTypeButton.TabIndex = 35;
-            this.FileTypeButton.UseVisualStyleBackColor = true;
-            this.FileTypeButton.Click += new System.EventHandler(this.FileTypeButton_Click);
+            reportDataSource1.Name = "DataSet1";
+            reportDataSource1.Value = this.FileInfoBindingSource;
+            this.reportViewer1.LocalReport.DataSources.Add(reportDataSource1);
+            this.reportViewer1.LocalReport.ReportEmbeddedResource = "UploadFolder.Report2.rdlc";
+            this.reportViewer1.Location = new System.Drawing.Point(361, 75);
+            this.reportViewer1.Name = "reportViewer1";
+            this.reportViewer1.ServerReport.BearerToken = null;
+            this.reportViewer1.Size = new System.Drawing.Size(396, 246);
+            this.reportViewer1.TabIndex = 36;
+            this.reportViewer1.Load += new System.EventHandler(this.reportViewer1_Load);
+            // 
+            // FolderUploadDataSet
+            // 
+            this.FolderUploadDataSet.DataSetName = "FolderUploadDataSet";
+            this.FolderUploadDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // FileInfoBindingSource
+            // 
+            this.FileInfoBindingSource.DataMember = "FileInfo";
+            this.FileInfoBindingSource.DataSource = this.FolderUploadDataSet;
+            // 
+            // FileInfoTableAdapter
+            // 
+            this.FileInfoTableAdapter.ClearBeforeFill = true;
             // 
             // Main
             // 
@@ -546,6 +571,8 @@
             this.groupBox1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FolderUploadDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FileInfoBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -594,8 +621,11 @@
         private System.Windows.Forms.Label MonthsLabel;
         private System.Windows.Forms.Label InformationLabel;
         private System.Windows.Forms.Label label1;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
         private System.Windows.Forms.Button FileTypeButton;
+        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
+        private System.Windows.Forms.BindingSource FileInfoBindingSource;
+        private FolderUploadDataSet FolderUploadDataSet;
+        private FolderUploadDataSetTableAdapters.FileInfoTableAdapter FileInfoTableAdapter;
     }
 }
 
